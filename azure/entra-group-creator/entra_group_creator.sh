@@ -41,7 +41,7 @@ create_group() {
   echo "Creating group: $group_name"
 
   # Standaard dynamische query
-  default_dynamic_query="user.memberof -any (group.objectId -in ['af13e296-a85e-4664-b010-a0a63ffab259', '9a50d1f7-3a0f-4c8b-9019-8096d5dc1e82', '9c8fd7ae-e9ab-4450-ad50-3b3c042b3b83', 'fcbe0039-abce-4d6a-a92b-c357da3f05e7'])"
+  default_dynamic_query="user.memberof -any (group.objectId -in ['YOUR_GROUP_ID_1', 'YOUR_GROUP_ID_2'])"
 
   # Als de groep dynamisch is en er geen dynamische query is opgegeven, gebruik de default query
   if [[ "$is_dynamic_group" == "yes" && -z "$dynamic_query" ]]; then
@@ -102,7 +102,7 @@ if [[ "$import_list" == "yes" ]]; then
         dynamic_query=""
         read -p "Enter the dynamic query for membership (leave empty to use default): " dynamic_query
         if [[ -z "$dynamic_query" ]]; then
-          dynamic_query="user.memberof -any (group.objectId -in ['af13e296-a85e-4664-b010-a0a63ffab259', '9a50d1f7-3a0f-4c8b-9019-8096d5dc1e82', '9c8fd7ae-e9ab-4450-ad50-3b3c042b3b83', 'fcbe0039-abce-4d6a-a92b-c357da3f05e7'])"
+          dynamic_query="user.memberof -any (group.objectId -in ['YOUR_GROUP_ID_1', 'YOUR_GROUP_ID_2'])"
         fi
       else
         dynamic_query=""
@@ -122,7 +122,7 @@ elif [[ "$import_list" == "no" ]]; then
       dynamic_query=""
       read -p "Enter the dynamic query for membership (leave empty to use default): " dynamic_query
       if [[ -z "$dynamic_query" ]]; then
-        dynamic_query="user.memberof -any (group.objectId -in ['af13e296-a85e-4664-b010-a0a63ffab259', '9a50d1f7-3a0f-4c8b-9019-8096d5dc1e82', '9c8fd7ae-e9ab-4450-ad50-3b3c042b3b83', 'fcbe0039-abce-4d6a-a92b-c357da3f05e7'])"
+        dynamic_query="user.memberof -any (group.objectId -in ['YOUR_GROUP_ID_1', 'YOUR_GROUP_ID_2'])"
       fi
     else
       dynamic_query=""
