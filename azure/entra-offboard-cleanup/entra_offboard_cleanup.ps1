@@ -121,13 +121,10 @@ foreach ($user in $allMembers) {
 
     try {
         $signInActivity = (Get-MgUser -UserId $user.Id -Property "SignInActivity").SignInActivity
-        $interactive    = $signInActivity.LastSignInDateTime
-        $nonInteractive = $signInActivity.LastNonInteractiveSignInDateTime
+        $lastActivity   = $signInActivity.LastSignInDateTime
 
-        $lastActivity = $interactive
-        if ($null -ne $nonInteractive -and ($null -eq $lastActivity -or $nonInteractive -gt $lastActivity)) {
-            $lastActivity = $nonInteractive
-        }
+        # Bewust enkel interactieve logins — non-interactive (bv. PowerBI service calls)
+        # reflecteren geen echte gebruikersactiviteit en worden genegeerd.
         if ($null -eq $lastActivity) {
             $lastActivity = (Get-MgUser -UserId $user.Id -Property "CreatedDateTime").CreatedDateTime
         }
