@@ -139,11 +139,28 @@ selected_pod = prompt(
     completer=completer, validator=validator, complete_while_typing=True,
 )
 
+# ── controleer of pod nog bestaat (kan herstart zijn tijdens selectie) ────────
+
+try:
+    v1.read_namespaced_pod(name=selected_pod, namespace=selected_ns)
+except client.exceptions.ApiException as e:
+    if e.status == 404:
+        print(f"\n\033[91m⛔ Pod '{selected_pod}' bestaat niet meer (herstart tijdens selectie?).\033[0m")
+        print("Herstart het script om de nieuwe pod te selecteren.")
+        exit(1)
+    raise
+
 # ── df uitvoeren ──────────────────────────────────────────────────────────────
 
 try:
     result = subprocess.run(
-        ["kubectl", "-n", selected_ns, "exec", selected_pod, "--", "df", "-h"],
+        [
+            "kubectl",
+            "--context", selected_context,   # zelfde context als Python client
+            "-n", selected_ns,
+            "exec", selected_pod,
+            "--", "df", "-h",
+        ],
         capture_output=True, text=True,
     )
     data = parse_df(result.stdout)
